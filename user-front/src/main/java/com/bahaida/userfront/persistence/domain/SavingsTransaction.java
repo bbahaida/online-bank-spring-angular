@@ -1,16 +1,24 @@
 package com.bahaida.userfront.persistence.domain;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Entity
 public class SavingsTransaction {
+    @Id
+    @GeneratedValue
     private Long id;
+    @Temporal(TemporalType.DATE)
     private Date date;
     private String description;
     private String type;
     private String status;
     private double amount;
     private BigDecimal availableBalance;
+
+    @ManyToOne
+    @JoinColumn(name = "savings_account_id")
     private SavingsAccount savingsAccount;
 
     public SavingsTransaction() {

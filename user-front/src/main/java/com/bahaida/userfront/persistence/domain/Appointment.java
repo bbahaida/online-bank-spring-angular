@@ -1,14 +1,21 @@
 package com.bahaida.userfront.persistence.domain;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class Appointment {
+    @Id
+    @GeneratedValue
     private Long id;
+    @Temporal(TemporalType.DATE)
     private Date date;
     private String location;
     private String description;
     private boolean confirmed;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Appointment() {

@@ -1,14 +1,24 @@
 package com.bahaida.userfront.persistence.domain;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+@Entity
 public class PrimaryAccount {
 
+    @Id
+    @GeneratedValue
     private Long id;
     private int accountNumber;
     private BigDecimal accountBalance;
 
+    @OneToMany(mappedBy = "primaryAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<PrimaryTransaction> primaryTransactions;
 
     public PrimaryAccount() {
@@ -43,10 +53,11 @@ public class PrimaryAccount {
         this.accountBalance = accountBalance;
     }
 
+    @JsonGetter
     public List<PrimaryTransaction> getPrimaryTransactions() {
         return primaryTransactions;
     }
-
+    @JsonSetter
     public void setPrimaryTransactions(List<PrimaryTransaction> primaryTransactions) {
         this.primaryTransactions = primaryTransactions;
     }

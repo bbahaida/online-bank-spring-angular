@@ -1,24 +1,40 @@
 package com.bahaida.userfront.persistence.domain;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+@Entity
 public class User implements Serializable {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "user_id", nullable = false, updatable = false)
     private Long userId;
     private String username;
     private String password;
     private String firstName;
     private String lastName;
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
     private String phone;
 
     private boolean enabled=true;
 
+    @OneToOne
     private PrimaryAccount primaryAccount;
+    @OneToOne
     private SavingsAccount savingsAccount;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Appointment> appointments;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Recipient> recipients;
 
     public User() {
@@ -113,18 +129,22 @@ public class User implements Serializable {
         this.savingsAccount = savingsAccount;
     }
 
+    @JsonGetter
     public List<Appointment> getAppointments() {
         return appointments;
     }
 
+    @JsonSetter
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
     }
 
+    @JsonGetter
     public List<Recipient> getRecipients() {
         return recipients;
     }
 
+    @JsonSetter
     public void setRecipients(List<Recipient> recipients) {
         this.recipients = recipients;
     }

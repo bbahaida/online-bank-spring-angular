@@ -1,6 +1,15 @@
 package com.bahaida.userfront.persistence.domain;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import javax.persistence.*;
+
+@Entity
 public class Recipient {
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
     private String email;
@@ -8,6 +17,9 @@ public class Recipient {
     private String accountNumber;
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Recipient() {
@@ -69,10 +81,12 @@ public class Recipient {
         this.description = description;
     }
 
+    @JsonGetter
     public User getUser() {
         return user;
     }
 
+    @JsonSetter
     public void setUser(User user) {
         this.user = user;
     }
