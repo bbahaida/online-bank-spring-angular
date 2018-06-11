@@ -40,7 +40,10 @@ public class HomeController {
             if (userService.checkUsernameExists(user.getUsername()))
                 model.addAttribute("usernameExists",true);
             return "signup";
+        }else{
+            userService.saveUser(user);
+            return "redirect:/";
         }
-        return "signup";
+
     }
 }
